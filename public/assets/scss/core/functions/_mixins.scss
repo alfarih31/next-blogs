@@ -1,0 +1,79 @@
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin border-radius($border-radius...) {
+  -webkit-border-radius: $border-radius;
+  -moz-border-radius: $border-radius;
+  border-radius: $border-radius;
+}
+
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -ms-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+@mixin translate($translate...) {
+  -webkit-transform: translate($translate);
+  -moz-transform: translate($translate);
+  -ms-transform: translate($translate);
+  -o-transform: translate($translate);
+  transform: translate($translate);
+}
+
+@mixin rotate($rotate...) {
+  -webkit-transform: rotate($rotate);
+  -moz-transform: rotate($rotate);
+  -ms-transform: rotate($rotate);
+  -o-transform: rotate($rotate);
+  transform: rotate($rotate);
+}
+
+@mixin centerAbsolute() {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+@mixin fullAbsoluteEmpty() {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  content: '';
+  left: 0;
+  top: 0;
+}
+
+@mixin sectionPadding() {
+  padding: rem(50px 0);
+}
+
+@mixin resetList() {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin rotateY($rotate...) {
+  -webkit-transform: rotateY($rotate);
+  -moz-transform: rotateY($rotate);
+  -ms-transform: rotateY($rotate);
+  -o-transform: rotateY($rotate);
+  transform: rotateY($rotate);
+}
+
+@mixin user-no-select() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

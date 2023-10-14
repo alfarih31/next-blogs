@@ -1,0 +1,22 @@
+{
+  "name": "react-summernote",
+  "version": "1.0.0",
+  "description": "React Summernote Wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "summernote",
+    "wysiwyg"
+  ],
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "summernote": "0.8.20",
+    "prop-types": "~15.7.2",
+    "jquery": "3.5.1",
+    "bootstrap": "3.4.1"
+  },
+  "author": "alfarihfz@gmail.com",
+  "license": "ISC"
+}

@@ -1,0 +1,38 @@
+@function font-weight($key) {
+  $font-weight: (
+    light: 300,
+    regular: 400,
+    normal: 500,
+    semibold: 600,
+    bold: 700
+  );
+
+  @if not map-has-key($font-weight, $key) {
+    @error "Unsupported `font-weight` keyword `#{$key}`";
+
+    @return null;
+  }
+
+  @return map-get($font-weight, $key);
+}
+
+@function font-style($key) {
+  $font-style: (
+    italic: italic,
+    normal: normal
+  );
+
+  @if not map-has-key($font-style, $key) {
+    @error "Unsupported `font-style` keyword `#{$key}`";
+
+    @return null;
+  }
+
+  @return map-get($font-style, $key);
+}
+
+@mixin fontCustom($font, $weight, $style) {
+  font-family: $font !important;
+  font-weight: font-weight($weight) !important;
+  font-style: font-style($style) !important;
+}

@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthProvider {
+  BASIC
+}
+
+model UserAuth {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @map("user_id")
+  username String @unique @map("username") @db.VarChar(255)
+
+  authProvider AuthProvider @default(BASIC)
+  credentials  String       @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("user_auth")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  fullName String @map("full_name") @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+
+  userAuths UserAuth[]
+  blogs     Blog[]
+
+  @@map("user")
+}
+
+model Blog {
+  id      Int    @id @default(autoincrement())
+  ownerId Int    @map("owner_id")
+  slug    String @unique @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+
+  blogPosts   BlogPost[]
+  attachments Attachment[]
+  owner       User         @relation(fields: [ownerId], references: [id])
+
+  @@map("blog")
+}
+
+enum BlogPostStatus {
+  DRAFT
+  PUBLISHED
+  HIDE
+}
+
+model BlogPost {
+  id     Int    @id @default(autoincrement())
+  blogId Int    @map("blog_id")
+  slug   String @db.VarChar(255)
+
+  status   BlogPostStatus @default(DRAFT)
+  content  String         @db.Text
+  metadata Json           @default("{}") @db.Json
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+
+  blog       Blog        @relation(fields: [blogId], references: [id])
+  blogHeader BlogHeader?
+
+  @@unique([blogId, slug], name: "blog_post_identifier")
+  @@map("blog_post")
+}
+
+model BlogHeader {
+  blogPostId             Int  @id @map("blog_post_id")
+  backgroundAttachmentId Int? @map("background_attachment_id")
+
+  caption String @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+
+  blogPost   BlogPost    @relation(fields: [blogPostId], references: [id])
+  background Attachment? @relation(fields: [backgroundAttachmentId], references: [id])
+
+  @@map("blog_header")
+}
+
+enum AttachmentProvider {
+  VERCEL_BLOB
+}
+
+model Attachment {
+  id     Int  @id @default(autoincrement())
+  blogId Int? @map("blog_id")
+
+  key      String             @db.VarChar(511)
+  filename String             @db.Text
+  provider AttachmentProvider @default(VERCEL_BLOB)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  blog       Blog?        @relation(fields: [blogId], references: [id])
+  BlogHeader BlogHeader[]
+
+  @@map("attachment")
+}

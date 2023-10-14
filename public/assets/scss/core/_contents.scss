@@ -1,0 +1,138 @@
+html {
+  letter-spacing: 0.02rem;
+
+  body {
+    display: block !important;
+    background-color: transparent;
+    color: $body-color;
+    margin: 0 !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    #__next {
+      position: relative;
+      min-height: 100vh;
+
+      .FallbackLoading {
+        position: relative;
+        top: 50%;
+        left: 50%;
+      }
+
+      .DrawerTransition {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 350ms;
+      }
+
+      .AppBar {
+        @extend .DrawerTransition;
+
+        height: $appbar-height;
+      }
+
+      .DrawerOpen {
+        @extend .DrawerTransition;
+
+        width: calc(100% - #{$drawer-width}) !important;
+        margin-left: $drawer-width !important;
+
+        .MenuIcon {
+          display: none;
+        }
+      }
+
+      .Drawer {
+        .DrawerPaper {
+          width: $drawer-width;
+        }
+
+        .DrawerControl {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding: 0.25rem 0.8rem;
+          height: fit-content;
+        }
+
+        .DrawerHeader {
+          height: fit-content;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 1rem;
+
+          a {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          &__Title {
+            text-align: center;
+            color: $font-color;
+
+            &:hover {
+              color: $font-color-hover;
+            }
+          }
+        }
+
+        .DrawerMenu {
+          a {
+            text-decoration: none;
+          }
+
+          &__Item {
+            .Item__Text {
+              font-weight: bold;
+            }
+
+            .Item__Icon {
+              color: $primary-color;
+            }
+
+            &:hover {
+              color: $font-color-hover;
+            }
+          }
+
+          &__Group {
+            .SubGroup {
+              margin-left: 1rem;
+            }
+          }
+        }
+      }
+
+      .Main {
+        @extend .DrawerTransition;
+
+        position: relative;
+        width: 100%;
+        backface-visibility: hidden;
+        min-height: calc(100vh - 4rem);
+        padding: 1rem 1rem calc(2rem + #{$footer-height});
+      }
+
+      .MainFullLayout {
+        position: relative;
+        width: 100%;
+        backface-visibility: hidden;
+        min-height: 100vh;
+      }
+
+      .Footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: $footer-height;
+      }
+
+      .FooterContent {
+        padding: 1rem 1rem 0;
+      }
+    }
+  }
+}

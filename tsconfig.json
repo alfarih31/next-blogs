@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "types": ["lib/dto/global.d.ts"],
+    "paths": {
+      "$lib": ["lib"],
+      "$lib/*": ["lib/*"],
+      "$servers": ["lib/servers"],
+      "$servers/*": ["lib/servers/*"],
+      "$clients": ["lib/clients"],
+      "$clients/*": ["lib/clients/*"],
+      "$dto": ["lib/dto"],
+      "$dto/*": ["lib/dto/*"],
+      "$assets": ["public/assets"],
+      "$assets/*": ["public/assets/*"],
+      "$configs": ["configs"],
+      "$configs/*": ["configs/*"],
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "**/*.js"]
+}
