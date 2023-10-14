@@ -1,6 +1,6 @@
 export type Action = {
   type: number;
-  payload?: any;
+  payload?: Record<string, unknown>;
 };
 
 export type UIState = {

@@ -8,11 +8,21 @@ import { Provider } from 'react-redux';
 import store from '$clients/stores/redux';
 import PageLoader from '$clients/components/PageLoader';
 import { useRouteConfig } from '$clients/hooks';
+import { appClientConfig } from '$configs/clients/app.client.config';
 
-function App({ pageProps, Component, router }: { pageProps: KeyValue; Component: NextPage; router: NextRouter }) {
+function App({
+  pageProps,
+  Component,
+  router,
+}: {
+  pageProps: Record<string, unknown>;
+  Component: NextPage;
+  router: NextRouter;
+}) {
   const [, routeConfig] = useRouteConfig();
 
   let Layout = dynamic(() => import('./_layout/FullPageLayout'), { loading: PageLoader });
+
   if (routeConfig) {
     if (!routeConfig.fullLayout && router.pathname !== '/error/[code]') {
       Layout = dynamic(() => import('./_layout/VerticalLayout'), { loading: PageLoader });
@@ -24,7 +34,7 @@ function App({ pageProps, Component, router }: { pageProps: KeyValue; Component:
   return (
     <>
       <Head>
-        <title>Material UI Dashboard</title>
+        <title>{appClientConfig.APP_NAME}</title>
       </Head>
       <Provider store={store}>
         <Layout>

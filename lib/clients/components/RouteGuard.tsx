@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from 'react';
-import { homePath, loginPath } from '$configs/route.config';
+import { homePath, loginPath } from '$configs/clients/route.client.config';
 import { useRouter } from 'next/router';
 import PageLoader from '$clients/components/PageLoader';
 import { useLogoutMutation, useRefreshSessionQuery } from '$clients/api';

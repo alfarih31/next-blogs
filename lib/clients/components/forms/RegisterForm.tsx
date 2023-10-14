@@ -14,7 +14,7 @@ const registerSchema = z.object({
 export type RegisterRequest = z.infer<typeof registerSchema>;
 
 export type RegisterFormProps = {
-  onSubmit: (request: RegisterRequest) => Promise<any>;
+  onSubmit: (request: RegisterRequest) => Promise<void>;
   disabled?: boolean;
 };
 

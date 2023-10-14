@@ -5,9 +5,10 @@ import HTTPClient, { HTTP_METHOD } from '$clients/http-client';
 
 export const sessionApi = createApi({
   baseQuery: new HTTPClient({ basePath: '/api/auth' }).toQueryClient(),
+  reducerPath: 'sessionApi',
   tagTypes: ['session'],
   endpoints: (builder) => ({
-    login: builder.mutation<Response<Session>, { username: string; password: string }>({
+    login: builder.mutation<ResponseBody<Session>, { username: string; password: string }>({
       invalidatesTags: ['session'],
       query: ({ username, password }) => ({
         method: HTTP_METHOD.GET,
@@ -21,10 +22,12 @@ export const sessionApi = createApi({
           data: { data },
         } = await queryFulfilled;
 
-        dispatch({
-          type: UPDATE_SESSION,
-          payload: data,
-        });
+        if (data) {
+          dispatch({
+            type: UPDATE_SESSION,
+            payload: data,
+          });
+        }
       },
     }),
     register: builder.mutation<void, { username: string; password: string; fullName: string }>({
@@ -34,7 +37,7 @@ export const sessionApi = createApi({
         data: params,
       }),
     }),
-    refreshSession: builder.query<Response<Session>, void>({
+    refreshSession: builder.query<ResponseBody<Session>, void>({
       providesTags: ['session'],
       query: () => ({
         method: HTTP_METHOD.GET,

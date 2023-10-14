@@ -112,7 +112,7 @@ html {
         position: relative;
         width: 100%;
         backface-visibility: hidden;
-        min-height: calc(100vh - 4rem);
+        height: calc(100vh - 4rem);
         padding: 1rem 1rem calc(2rem + #{$footer-height});
       }
 

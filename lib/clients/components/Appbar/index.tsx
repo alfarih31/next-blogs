@@ -5,8 +5,8 @@ import type { NavigationConfig } from '$dto/config';
 import { AppBar, IconButton, Toolbar, useScrollTrigger } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useRouterPath } from '$clients/hooks';
-import navigationConfig from '$configs/navigation.config';
-import { appConfig } from '$configs/app.config';
+import navigationClientConfig from '$configs/clients/navigation.client.config';
+import { appClientConfig } from '$configs/clients/app.client.config';
 
 function ElevationScroll({ children, window }: { children: ReactElement; window: Window }) {
   const trigger = useScrollTrigger({
@@ -27,7 +27,8 @@ export default function Appbar({
 }: {
   drawerOpen: boolean;
   toggleDrawer: () => void;
-} & KeyValue) {
+  window?: Window;
+} & Record<string, unknown>) {
   const path = useRouterPath();
 
   const findNavConfig = (navConfigs: NavigationConfig[]): NavigationConfig | undefined => {
@@ -47,11 +48,11 @@ export default function Appbar({
     }
   };
 
-  const thisNavConfig = useMemo(() => findNavConfig(navigationConfig), [path]);
+  const thisNavConfig = useMemo(() => findNavConfig(navigationClientConfig), [path]);
 
   return (
     <>
-      <ElevationScroll window={props.window}>
+      <ElevationScroll window={props.window!}>
         <AppBar position="fixed" className={classNames('AppBar', { DrawerOpen: drawerOpen })}>
           <Toolbar>
             <IconButton
@@ -63,7 +64,7 @@ export default function Appbar({
             >
               <Menu />
             </IconButton>
-            {thisNavConfig ? thisNavConfig.title : appConfig.APP_NAME}
+            {thisNavConfig ? thisNavConfig.title : appClientConfig.APP_NAME}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
@@ -71,3 +72,7 @@ export default function Appbar({
     </>
   );
 }
+
+Appbar.defaultProps = {
+  window: undefined,
+};

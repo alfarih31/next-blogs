@@ -13,7 +13,7 @@ const registerSchema = z.object({
 export type LoginRequest = z.infer<typeof registerSchema>;
 
 export type LoginFormProps = {
-  onSubmit: (request: LoginRequest) => Promise<any>;
+  onSubmit: (request: LoginRequest) => Promise<void>;
   disabled?: boolean;
 };
 

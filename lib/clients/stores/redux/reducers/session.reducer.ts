@@ -12,7 +12,7 @@ const initState: Session = {
 const session = (prevState: Session = initState, action: Action): Session => {
   switch (action.type) {
     case UPDATE_SESSION:
-      return action.payload;
+      return action.payload as unknown as Session;
     default:
       return prevState;
   }

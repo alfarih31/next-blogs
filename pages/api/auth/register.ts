@@ -1,12 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import { HTTP_METHOD } from '$lib/clients/http-client';
 import { prismaClient } from '$servers/prisma-client';
 import { genSalt, hash } from 'bcrypt';
-import { authConfig } from '$configs/auth.config';
+import { authServerConfig } from '$configs/servers/auth.server.config';
+import { withApiHandlerMiddleware } from '$servers/middlewares';
 
-const post = async (req: NextApiRequest, res: NextApiResponse) => {
+const post = async (req: NextApiRequest) => {
   const { username, password, fullName } = req.body;
-  const salt = await genSalt(authConfig.BCRYPT_SALT_ROUNDS);
+  const salt = await genSalt(authServerConfig.BCRYPT_SALT_ROUNDS);
   const passwordHash = await hash(password, salt);
   await prismaClient.user.create({
     data: {
@@ -19,15 +20,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
   });
-
-  res.status(200).json({ message: 'OK' });
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method?.toUpperCase()) {
-    case HTTP_METHOD.POST:
-      return post(req, res);
-    default:
-      return res.status(404).send('not implemented');
-  }
-}
+export default withApiHandlerMiddleware([HTTP_METHOD.POST], post);

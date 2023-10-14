@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "types": ["lib/dto/global.d.ts"],
+    "types": ["./lib/dto/global.d.ts"],
     "paths": {
       "$lib": ["lib"],
       "$lib/*": ["lib/*"],

@@ -15,6 +15,7 @@ export interface NavigationConfig {
 }
 
 export interface RouteConfig {
+  path: string | RegExp;
   permissions?: number[];
   fullLayout?: boolean;
 }

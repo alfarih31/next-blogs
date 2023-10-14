@@ -1,24 +1,82 @@
-import { Typography } from '@mui/material';
+import { Box, Container, Divider, List, ListItemButton, ListItemText, Pagination, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
+import { useListPublicBlogQuery } from '$clients/api';
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.grey.A200,
+  ...theme.typography.body2,
+  height: '100vh',
+  padding: theme.spacing(1),
+  color: theme.palette.text.secondary,
+}));
+
+const StyledList = styled(List)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  color: theme.palette.text.secondary,
+}));
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    width: '90%',
+  },
+  [theme.breakpoints.up('sm')]: {
+    width: '40%',
+  },
+}));
 
 function Home() {
+  const [paging, setPaging] = useState({
+    page: 0,
+    rowsPerPage: 5,
+    totalRows: 0,
+  });
+  const { data, isLoading, isFetching } = useListPublicBlogQuery({
+    page: paging.page,
+    rowsPerPage: paging.rowsPerPage,
+  });
+
+  useEffect(() => {
+    if (!(isLoading && isFetching) && !!data) {
+      setPaging({ ...paging, totalRows: data.data.totalRows });
+    }
+  }, [data]);
+
   return (
-    <div>
-      <Typography variant="h4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in lobortis lacus. Aliquam iaculis eget nunc
-        vitae hendrerit. Phasellus eget mi ex. Etiam vel quam eu tellus condimentum iaculis. Ut sit amet felis et mi
-        dapibus facilisis. Praesent elementum ex suscipit facilisis placerat. Morbi dolor metus, volutpat sit amet
-        ullamcorper ut, rhoncus vitae lectus. Fusce fringilla, est at faucibus tristique, sem purus commodo risus, nec
-        iaculis odio neque in ligula. Aliquam aliquet pretium pretium. Mauris nec turpis libero. Praesent ut odio rutrum
-        ligula pellentesque sollicitudin id vitae lectus. Sed tempus ut nisl vitae dictum. Quisque elementum tristique
-        mi quis sollicitudin. Nulla sit amet facilisis ligula. Aenean in libero vitae est hendrerit laoreet nec ut
-        magna. Donec gravida, sem quis bibendum venenatis, augue dolor posuere ligula, ac malesuada elit mauris auctor
-        risus. Integer eget tincidunt libero. Morbi mollis, arcu eget imperdiet molestie, dolor nunc dapibus risus,
-        vitae ornare enim magna non libero. Donec hendrerit, leo accumsan convallis fermentum, purus dui luctus odio, ac
-        elementum mi dolor at ligula. Fusce quis augue aliquam, auctor nibh ac, porttitor ante. Pellentesque aliquam at
-        ex ac gravida. Nam id mi non lorem efficitur viverra. Mauris id aliquam purus. Cras dictum rhoncus est nec
-        tristique.
-      </Typography>
-    </div>
+    <StyledBox>
+      <StyledContainer>
+        <Typography variant="h2">Our blogs</Typography>
+
+        <StyledList>
+          {data &&
+            data.data.rows.map((r) => (
+              <>
+                <ListItemButton key={r.slug} alignItems="flex-start" component="a" href={`/${r.slug}`}>
+                  <ListItemText
+                    primary={r.name}
+                    secondary={
+                      <Typography sx={{ display: 'inline' }} component="span" variant="caption" color="text.primary">
+                        {` ${r.authorName}`}
+                      </Typography>
+                    }
+                  />
+                </ListItemButton>
+                <Divider />
+              </>
+            ))}
+          <Pagination
+            count={Math.floor(paging.totalRows / paging.rowsPerPage)}
+            page={paging.page + 1}
+            color="primary"
+            onChange={(e, page) => setPaging({ ...paging, page: page - 1 })}
+            showFirstButton
+            showLastButton
+          />
+        </StyledList>
+      </StyledContainer>
+    </StyledBox>
   );
 }
 

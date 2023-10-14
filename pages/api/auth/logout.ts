@@ -3,20 +3,13 @@ import { HTTP_METHOD } from '$lib/clients/http-client';
 import { COOKIES_KEY } from '$lib/CONSTANTS';
 import ServerCookies from '$lib/servers/server-cookies';
 import KeyGrip from '$lib/servers/key-grip';
+import { appServerConfig } from '$configs/servers/app.server.config';
+import { withApiHandlerMiddleware } from '$servers/middlewares';
 
-const _delete = async (req: NextApiRequest, res: NextApiResponse) => {
-  const cookie = new ServerCookies(req, res, { encrypt: true, keys: new KeyGrip(process.env.ENCRYPT_SECRET || '') });
+const del = async (req: NextApiRequest, res: NextApiResponse) => {
+  const cookie = new ServerCookies(req, res, { encrypt: true, keys: new KeyGrip(appServerConfig.ENCRYPT_SECRET) });
 
-  cookie.deleteValues(COOKIES_KEY.USER_TOKEN, COOKIES_KEY.SESSION);
-
-  res.status(200).json({ message: 'OK' });
+  cookie.deleteValues(COOKIES_KEY.SESSION);
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method?.toUpperCase()) {
-    case HTTP_METHOD.DELETE:
-      return _delete(req, res);
-    default:
-      return res.status(404).send('not implemented');
-  }
-}
+export default withApiHandlerMiddleware([HTTP_METHOD.DELETE], del);

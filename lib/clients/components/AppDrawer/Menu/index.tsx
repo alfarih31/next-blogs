@@ -3,7 +3,7 @@ import type { State } from '$clients/stores/redux';
 import type { NavigationConfig } from '$dto/config';
 import { connect } from 'react-redux';
 import { List } from '@mui/material';
-import navigationConfig from '$configs/navigation.config';
+import navigationClientConfig from '$configs/clients/navigation.client.config';
 import MenuItem from './Item';
 // eslint-disable-next-line import/no-cycle
 import MenuGroup from './Group';
@@ -39,7 +39,7 @@ export const MenuBuilder = connect((state: State) => ({ session: state.session }
 export default function DrawerMenu() {
   return (
     <List component="nav" className="DrawerMenu">
-      <MenuBuilder menu={navigationConfig} />
+      <MenuBuilder menu={navigationClientConfig} />
     </List>
   );
 }

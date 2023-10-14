@@ -1,13 +1,20 @@
 import { RouteConfig } from '$dto/config';
-import routeConfig from '$configs/route.config';
+import routeClientConfig from '$configs/clients/route.client.config';
 import { pathToRegexp } from 'path-to-regexp';
 import { useRouterPath } from './use-router-path';
 
 export const useRouteConfig = (): [string, RouteConfig | undefined] => {
   const path = useRouterPath();
 
-  const matchedPath = Object.keys(routeConfig).find((thisPath) => {
-    const matches = pathToRegexp(thisPath).exec(path);
+  const matchedPath = routeClientConfig.find(({ path: thisPath }) => {
+    let pathRegExp: RegExp;
+    if (typeof thisPath === 'string') {
+      pathRegExp = pathToRegexp(thisPath);
+    } else {
+      pathRegExp = thisPath;
+    }
+
+    const matches = pathRegExp.exec(path);
     if (matches) {
       return matches.length > 0;
     }
@@ -15,9 +22,5 @@ export const useRouteConfig = (): [string, RouteConfig | undefined] => {
     return false;
   });
 
-  if (!matchedPath) {
-    return [path, undefined];
-  }
-
-  return [path, routeConfig[matchedPath]];
+  return [path, matchedPath];
 };

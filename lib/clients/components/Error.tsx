@@ -1,7 +1,7 @@
 import { NextPageContext } from 'next';
 import { Button, Typography } from '@mui/material';
 import { Home } from '@mui/icons-material';
-import { homePath } from '$configs/route.config';
+import { homePath } from '$configs/clients/route.client.config';
 import Link from 'next/link';
 
 const ErrorMessageMap: { [key: number]: string } = {
