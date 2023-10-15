@@ -3,6 +3,7 @@ import { USER_ROLE } from '$lib/CONSTANTS';
 
 export const homePath = '/admin/dashboard/blogs';
 export const loginPath = '/admin/login';
+export const registerPath = '/admin/register';
 
 const routeClientConfig: RouteConfig[] = [
   {
