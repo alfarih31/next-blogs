@@ -115,8 +115,8 @@ export function CreateBlogPostForm({ blogId, onSubmit, disabled }: CreateBlogPos
             />
           </Item>
         ))}
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+        <Grid container justifyContent="center" direction="row">
+          <Grid item xs={6} sx={{ paddingRight: '0.5rem' }}>
             <Button
               style={{ width: '100%' }}
               variant="outlined"
@@ -128,7 +128,7 @@ export function CreateBlogPostForm({ blogId, onSubmit, disabled }: CreateBlogPos
             </Button>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={6} sx={{ paddingLeft: '0.5rem' }}>
             <Button style={{ width: '100%' }} variant="contained" endIcon={<Save />} type="submit" disabled={disabled}>
               Publish
             </Button>

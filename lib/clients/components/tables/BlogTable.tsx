@@ -3,6 +3,7 @@ import { appClientConfig } from '$configs/clients/app.client.config';
 import { ReactNode } from 'react';
 import { DynamicFeed } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import Link from 'next/link';
 import type { BaseTableProps, HeadCell } from './BaseTable';
 import { BaseTable } from './BaseTable';
 
@@ -82,7 +83,11 @@ export function BlogTable({ rows, paging, onPageChange, onRowPerPageChange, onCl
       heads={headCells}
       rows={rows.map((r) => ({
         ...r,
-        url: <Chip label={`${appClientConfig.PUBLIC_URL}/${r.slug}`} variant="outlined" />,
+        url: (
+          <Link href={`${appClientConfig.PUBLIC_URL}/${r.slug}`}>
+            <Chip label={`${appClientConfig.PUBLIC_URL}/${r.slug}`} variant="outlined" />
+          </Link>
+        ),
         actions: <ActionButton onClickRow={onClickRow} blogId={r.id} />,
       }))}
       paging={paging}

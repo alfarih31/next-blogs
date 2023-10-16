@@ -1,4 +1,14 @@
-import { Box, Container, Divider, List, ListItemButton, ListItemText, Pagination, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Pagination,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { useListPublicBlogQuery } from '$clients/api';
@@ -66,14 +76,17 @@ function Home() {
                 <Divider />
               </>
             ))}
-          <Pagination
-            count={Math.floor(paging.totalRows / paging.rowsPerPage)}
-            page={paging.page + 1}
-            color="primary"
-            onChange={(e, page) => setPaging({ ...paging, page: page - 1 })}
-            showFirstButton
-            showLastButton
-          />
+          <ListItem>
+            <Pagination
+              sx={{ marginLeft: 'auto' }}
+              count={Math.floor(paging.totalRows / paging.rowsPerPage)}
+              page={paging.page + 1}
+              color="primary"
+              onChange={(e, page) => setPaging({ ...paging, page: page - 1 })}
+              showFirstButton
+              showLastButton
+            />
+          </ListItem>
         </StyledList>
       </StyledContainer>
     </StyledBox>

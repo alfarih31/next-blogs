@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react';
 import Snackbar from '$clients/components/Snackbar';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
-import { AppRegistration, Login } from '@mui/icons-material';
+import { AppRegistration, Home, Login } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import { loginPath, registerPath } from '$configs/clients/route.client.config';
+import { homePath, loginPath, registerPath } from '$configs/clients/route.client.config';
 
 export default function FullPageLayout({ children }: { children: ReactElement }) {
   const router = useRouter();
@@ -17,6 +17,7 @@ export default function FullPageLayout({ children }: { children: ReactElement })
           icon={<SpeedDialIcon />}
           direction="up"
         >
+          <SpeedDialAction icon={<Home />} tooltipTitle="Home" onClick={() => router.push(homePath)} />
           <SpeedDialAction
             icon={<AppRegistration />}
             tooltipTitle="Register"

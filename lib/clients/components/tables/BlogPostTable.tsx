@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Chip } from '@mui/material';
 import { appClientConfig } from '$configs/clients/app.client.config';
+import Link from 'next/link';
 import type { BaseTableProps, HeadCell } from './BaseTable';
 import { BaseTable } from './BaseTable';
 
@@ -59,7 +60,11 @@ export function BlogPostTable({ rows, paging, onPageChange, onRowPerPageChange }
       heads={headCells}
       rows={rows.map((r) => ({
         ...r,
-        url: <Chip label={`${appClientConfig.PUBLIC_URL}/${r.blog.slug}/${r.slug}`} variant="outlined" />,
+        url: (
+          <Link href={`${appClientConfig.PUBLIC_URL}/${r.blog.slug}/${r.slug}`}>
+            <Chip label={`${appClientConfig.PUBLIC_URL}/${r.blog.slug}/${r.slug}`} variant="outlined" />
+          </Link>
+        ),
       }))}
       paging={paging}
       onPageChange={onPageChange}
