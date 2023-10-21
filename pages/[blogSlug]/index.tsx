@@ -1,30 +1,13 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Pagination,
-  Typography,
-} from '@mui/material';
+import { Button, Divider, List, ListItem, ListItemButton, ListItemText, Pagination, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { useListPublicBlogPostsQuery } from '$clients/api';
 import { useRouter } from 'next/router';
 import PageLoader from '$clients/components/PageLoader';
-import { Home } from '@mui/icons-material';
+import { Home, Pages } from '@mui/icons-material';
 import Link from 'next/link';
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.grey.A200,
-  ...theme.typography.body2,
-  height: '100vh',
-  padding: theme.spacing(1),
-  color: theme.palette.text.secondary,
-}));
+import { StyledContainer } from '$clients/components/StyledContainer';
+import { StyledBox } from '$clients/components/StyledBox';
 
 const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -33,14 +16,7 @@ const StyledList = styled(List)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '90%',
-  },
-  [theme.breakpoints.up('sm')]: {
-    width: '40%',
-  },
-}));
+
 
 export default function BlogPosts() {
   const router = useRouter();
@@ -50,7 +26,7 @@ export default function BlogPosts() {
     rowsPerPage: 5,
     totalRows: 0,
   });
-  const { data, isLoading, isFetching } = useListPublicBlogPostsQuery({
+  const { data, isLoading, isFetching, error, isError } = useListPublicBlogPostsQuery({
     blogSlug: blogSlug as string,
     page: paging.page,
     rowsPerPage: paging.rowsPerPage,
@@ -62,19 +38,34 @@ export default function BlogPosts() {
     }
   }, [data]);
 
+  if(isError && error) {
+    throw error
+  }
   if (!data) {
     return <PageLoader />;
   }
+
+  const isEmpty = !(isLoading && isFetching) && data.data.rows.length === 0
+
   return (
     <StyledBox>
       <StyledContainer>
         <Link href="/" as="/">
           <Button startIcon={<Home />}>Back to home</Button>
         </Link>
-        <Typography variant="h4">{data.data.metadata!.blog.name}</Typography>
-        <Typography variant="caption">{data.data.metadata!.blog.authorName}</Typography>
+        <section className="FlexContainer--TopLeft">
+          <Typography variant="h4">{data.data.metadata!.blog.name}</Typography>
+          <Typography sx={{marginLeft: '0.5rem'}} variant="caption">posts<Pages fontSize="small"/></Typography>
+        </section>
+
+        <Typography style={{marginLeft: '1rem'}} variant="caption">{data.data.metadata!.blog.authorName}</Typography>
 
         <StyledList>
+          {isEmpty && (
+              <ListItem>
+                <Typography sx={{margin: 'auto'}} variant="overline">No blog post here</Typography>
+              </ListItem>
+          )}
           {data &&
             data.data.rows.map((r) => (
               <>
@@ -93,7 +84,7 @@ export default function BlogPosts() {
             ))}
           <ListItem>
             <Pagination
-              sx={{ marginLeft: 'auto' }}
+              sx={{ marginLeft: 'auto', display: isEmpty ? "none": "inherit" }}
               count={Math.floor(paging.totalRows / paging.rowsPerPage)}
               page={paging.page + 1}
               color="primary"

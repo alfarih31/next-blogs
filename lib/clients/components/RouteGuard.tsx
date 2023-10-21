@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from 'react';
-import { homePath, loginPath } from '$configs/clients/route.client.config';
+import { dashboardPath, loginPath } from '$configs/clients/route.client.config';
 import { useRouter } from 'next/router';
 import PageLoader from '$clients/components/PageLoader';
 import { useLogoutMutation, useRefreshSessionQuery } from '$clients/api';
@@ -94,7 +94,7 @@ export default function RouteGuard({ children }: { children: ReactElement }) {
     // Handle for authenticated user
     if (session && session.authenticated) {
       if (path === loginPath) {
-        router.replace({ pathname: homePath }, undefined, { shallow: true });
+        router.replace({ pathname: dashboardPath }, undefined, { shallow: true });
         return <PageLoader />;
       }
       return <ErrorPage statusCode={HttpStatusCode.Unauthorized} message="Unauthorized" />;

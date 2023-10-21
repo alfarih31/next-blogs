@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest): Promise<APIResponse.ListPublicBlogP
     },
   });
   if (!blog) {
-    throw new HttpError('', 'Blog not found', HttpStatusCode.BadRequest);
+    throw new HttpError('', 'Blog not found', HttpStatusCode.NotFound);
   }
 
   const where = {

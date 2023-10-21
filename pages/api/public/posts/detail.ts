@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest): Promise<APIResponse.PublicBlogPostD
     },
   });
   if (!blog) {
-    throw new HttpError('', 'Blog not found', HttpStatusCode.BadRequest);
+    throw new HttpError('', 'Blog not found', HttpStatusCode.NotFound);
   }
 
   const blogPost = await prismaClient.blogPost.findFirst({
@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest): Promise<APIResponse.PublicBlogPostD
   });
 
   if (!blogPost) {
-    throw new HttpError('', 'Blog post not found', HttpStatusCode.BadRequest);
+    throw new HttpError('', 'Blog post not found', HttpStatusCode.NotFound);
   }
 
   return {

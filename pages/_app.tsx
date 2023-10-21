@@ -9,6 +9,7 @@ import store from '$clients/stores/redux';
 import PageLoader from '$clients/components/PageLoader';
 import { useRouteConfig } from '$clients/hooks';
 import { appClientConfig } from '$configs/clients/app.client.config';
+import ErrorBoundary from '$clients/components/ErrorBoundary';
 
 function App({
   pageProps,
@@ -38,9 +39,11 @@ function App({
       </Head>
       <Provider store={store}>
         <Layout>
-          <RouteGuard>
-            <Component {...pageProps} />
-          </RouteGuard>
+          <ErrorBoundary>
+            <RouteGuard>
+              <Component {...pageProps} />
+            </RouteGuard>
+          </ErrorBoundary>
         </Layout>
       </Provider>
     </>

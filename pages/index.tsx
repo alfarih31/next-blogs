@@ -1,17 +1,11 @@
-import {
-  Box,
-  Container,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Pagination,
-  Typography,
-} from '@mui/material';
+import { Box, Divider, List, ListItem, ListItemButton, ListItemText, Pagination, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { useListPublicBlogQuery } from '$clients/api';
+import { StyledContainer } from '$clients/components/StyledContainer';
+import PageLoader from '$clients/components/PageLoader';
+import { AdsClick, Groups } from '@mui/icons-material';
+import { dashboardPath } from '$configs/clients/route.client.config';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.grey.A200,
@@ -28,14 +22,6 @@ const StyledList = styled(List)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '90%',
-  },
-  [theme.breakpoints.up('sm')]: {
-    width: '40%',
-  },
-}));
 
 function Home() {
   const [paging, setPaging] = useState({
@@ -54,12 +40,36 @@ function Home() {
     }
   }, [data]);
 
+  if (!data) {
+    return <PageLoader />;
+  }
+
+  const isEmpty = !(isLoading && isFetching) && data.data.rows.length === 0
+
   return (
     <StyledBox>
       <StyledContainer>
-        <Typography variant="h2">Our blogs</Typography>
+
+        <section className="FlexContainer--TopLeft">
+          <Typography variant="h3">PEOPLE BLOGS</Typography>
+          <Groups sx={{marginLeft: '1rem'}}/>
+        </section>
+
 
         <StyledList>
+          {isEmpty && (
+              <>
+                <ListItem>
+                  <Typography sx={{margin: 'auto'}} variant="overline">No one writes a blog</Typography>
+
+                </ListItem>
+                <ListItemButton href={dashboardPath}>
+                  <Typography sx={{margin: 'auto'}} variant="h6">You can create yours here! <AdsClick/></Typography>
+                </ListItemButton>
+              </>
+
+          )}
+
           {data &&
             data.data.rows.map((r) => (
               <>
@@ -78,7 +88,7 @@ function Home() {
             ))}
           <ListItem>
             <Pagination
-              sx={{ marginLeft: 'auto' }}
+              sx={{ marginLeft: 'auto', display: isEmpty ? "none": "inherit" }}
               count={Math.floor(paging.totalRows / paging.rowsPerPage)}
               page={paging.page + 1}
               color="primary"

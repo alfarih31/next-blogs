@@ -9,10 +9,11 @@ export interface NavigationConfig {
   linkTo?: string;
   onClick?: () => MaybePromise<void>;
   expanded?: boolean;
-  children?: NavigationConfig[];
-  permissions?: number[];
-  omit?: boolean;
+  children?: NavigationConfig[]
+  permissions?: number[]
+  omit?: boolean
 }
+
 
 export interface RouteConfig {
   path: string | RegExp;
