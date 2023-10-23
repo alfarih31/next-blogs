@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    "@typescript-eslint/no-throw-literal": 0,
     '@typescript-eslint/no-namespace': 0,
     '@typescript-eslint/ban-types': [
       'error',
